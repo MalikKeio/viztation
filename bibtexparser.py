@@ -122,3 +122,4 @@ class BibTexFile:
             if len(reference_string) > 0:
                 self.references.append(Reference(reference_string))
             cursor += 1
+            last_curly_index = -1

@@ -147,5 +147,25 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.references[0].entries['year'], '2007')
         self.assertEqual(bibtexfile.references[0].entries['publisher'], 'Multilingual Matters')
 
+    def test_two_file(self):
+        filename = 'two.bib'
+        bibtexfile = BibTexFile(filename)
+        self.assertEqual(bibtexfile.filename, 'two.bib')
+        self.assertEqual(len(bibtexfile.references), 2)
+        self.assertEqual(bibtexfile.references[0].type, 'book')
+        self.assertEqual(bibtexfile.references[0].id, 'feng2007bilingual')
+        self.assertEqual(bibtexfile.references[0].entries['title'], 'Bilingual education in {C}hina: practices, policies, and concepts')
+        self.assertEqual(bibtexfile.references[0].entries['author'], 'Feng, Anwei')
+        self.assertEqual(bibtexfile.references[0].entries['volume'], '64')
+        self.assertEqual(bibtexfile.references[0].entries['year'], '2007')
+        self.assertEqual(bibtexfile.references[0].entries['publisher'], 'Multilingual Matters')
+        self.assertEqual(bibtexfile.references[1].type, 'book')
+        self.assertEqual(bibtexfile.references[1].id, 'baker2011foundations')
+        self.assertEqual(bibtexfile.references[1].entries['title'], 'Foundations of bilingual education and bilingualism')
+        self.assertEqual(bibtexfile.references[1].entries['author'], 'Baker, Colin')
+        self.assertEqual(bibtexfile.references[1].entries['edition'], '4')
+        self.assertEqual(bibtexfile.references[1].entries['year'], '2011')
+        self.assertEqual(bibtexfile.references[1].entries['publisher'], 'Multilingual Matters')
+
 if __name__ == '__main__':
     unittest.main()

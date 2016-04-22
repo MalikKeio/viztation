@@ -58,5 +58,29 @@ class TestReferenceClass(unittest.TestCase):
         self.assertEqual(ref.id, 'newton1664gravity')
         self.assertEqual(ref.entries, {"author": "Newton, Isaac"})
 
+    def test_multi_entry_white_spaces(self):
+        string = """
+        @book{  newton1664gravity  ,
+            author  =
+            "Newton, Isaac"
+
+              ,
+             year= "1664"
+        }
+        """
+        ref = Reference(string)
+        self.assertEqual(ref.type, 'book')
+        self.assertEqual(ref.id, 'newton1664gravity')
+        self.assertEqual(ref.entries, {"author": "Newton, Isaac", "year": "1664"})
+
+    def test_multi_entry_no_white_spaces(self):
+        string = '@book{newton1664gravity,author="Newton, Isaac",year="1664"}'
+        ref = Reference(string)
+        self.assertEqual(ref.type, 'book')
+        self.assertEqual(ref.id, 'newton1664gravity')
+        self.assertEqual(ref.entries, {"author": "Newton, Isaac", "year": "1664"})
+
+
+
 if __name__ == '__main__':
     unittest.main()

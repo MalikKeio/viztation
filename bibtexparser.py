@@ -40,7 +40,7 @@ class Reference:
             self.type = string[1:first_curly].strip()
             end_of_id = string.index(',', first_curly)
             self.id = string[first_curly + 1:end_of_id].strip()
-            cursor = end_of_id
+            cursor = end_of_id + 1
             # Dealing with entries
             # Loop ending condition: no "," found
             self.entries = {}
@@ -53,9 +53,9 @@ class Reference:
                     next_comma = string.find(',', next_dquote + 1)
                     has_entry = next_comma != -1
                     if has_entry:
-                        entry_substring = string[cursor+1:next_comma].strip()
+                        entry_substring = string[cursor:next_comma].strip()
                     else:
-                        entry_substring = string[cursor+1:last_curly].strip()
+                        entry_substring = string[cursor:last_curly].strip()
                     cursor = next_comma + 1
                 else:
                     # Did not found "", the user may be using {}

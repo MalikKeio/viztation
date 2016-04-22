@@ -5,7 +5,7 @@ def getEntry(string):
     Get a stripped reference entry as argument
     Like 'author="Newton, Isaac"' for example.
     """
-    print("Entry:", string, "EOS")
+    logging.debug("Entry:", string, "EOS")
     equal = string.find("=")
     if equal == -1:
         name = None
@@ -14,7 +14,7 @@ def getEntry(string):
         first_dquote = string.find('"', equal)
         first_curly = string.find('{', equal)
         name = string[0:equal].strip()
-        print("getEntry: first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
+        logging.debug("getEntry: first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
         if first_curly == -1 or (first_dquote != -1 and first_dquote < first_curly):
             # Found "", look for the next dquote
             last_dquote = string.rfind('"')
@@ -28,7 +28,7 @@ def getEntry(string):
 class Reference:
     def __init__(self, string):
         string = string.strip()
-        print(string + "\n\n")
+        logging.debug(string + "\n\n")
         last_curly = string.rfind('}')
         cursor = 0
         if string[0] != "@":
@@ -51,13 +51,13 @@ class Reference:
             while has_entry:
                 first_dquote = string.find('"', cursor)
                 first_curly = string.find('{', cursor)
-                print("first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
+                logging.debug("first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
                 if first_curly == -1 and first_dquote == -1:
                     logging.error("No '\"' nor '{' were found.\n" + string)
                     return
                 if first_curly == -1 or (first_dquote != -1 and first_dquote < first_curly):
                     # Found "", look for the next dquote
-                    print('Use ""')
+                    logging.debug('Use ""')
                     next_dquote = string.find('"', first_dquote + 1)
                     next_comma = string.find(',', next_dquote + 1)
                     has_entry = next_comma != -1
@@ -68,7 +68,7 @@ class Reference:
                     cursor = next_comma + 1
                 elif first_dquote == -1 or (first_curly != -1 and first_curly < first_dquote):
                     # Did not found "", the user may be using {}
-                    print("Use {}")
+                    logging.debug("Use {}")
                     curly_counter = 0
                     last_curly_index = -1
                     start_type = cursor

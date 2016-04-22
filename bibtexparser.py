@@ -102,7 +102,7 @@ class BibTexFile:
         self.filename = filename
         f = open(filename, 'r')
         content = f.read()
-        print(content)
+        f.close()
         cursor = 0
         curly_counter = 0
         last_curly_index = -1

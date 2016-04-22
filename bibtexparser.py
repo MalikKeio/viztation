@@ -31,7 +31,7 @@ class Reference:
         logging.debug(string + "\n\n")
         last_curly = string.rfind('}')
         cursor = 0
-        if string[0] != "@":
+        if len(string) == 0 or string[0] != "@":
             logging.error("Did not found expected `@` at beginning of reference.\n" + string)
             self._error_handler()
         else:
@@ -98,5 +98,27 @@ class Reference:
 
 
 class BibTexFile:
-    def __init__(self, file):
-        self._file = file
+    def __init__(self, filename):
+        self.filename = filename
+        f = open(filename, 'r')
+        content = f.read()
+        print(content)
+        cursor = 0
+        curly_counter = 0
+        last_curly_index = -1
+        self.references = []
+        has_reference = True
+        while cursor < len(content):
+            cursor_start = cursor
+            while cursor < len(content) and last_curly_index < 0:
+                if content[cursor] == "{":
+                    curly_counter += 1
+                elif content[cursor] == "}":
+                    curly_counter -= 1
+                    if curly_counter == 0:
+                        last_curly_index = cursor
+                cursor += 1
+            reference_string = content[cursor_start:cursor]
+            if len(reference_string) > 0:
+                self.references.append(Reference(reference_string))
+            cursor += 1

@@ -1,7 +1,16 @@
 import unittest
 from bibtexparser import Reference
+from bibtexparser import BibTexFile
 
 class TestReferenceClass(unittest.TestCase):
+
+
+    def test_empty_input(self):
+        string = ""
+        ref = Reference(string)
+        self.assertEqual(ref.type, None)
+        self.assertEqual(ref.id, None)
+        self.assertEqual(ref.entries, {})
 
     def test_wrong_input_no_at(self):
         string = "jg"
@@ -115,6 +124,28 @@ class TestReferenceClass(unittest.TestCase):
         self.assertEqual(ref.entries["howpublished"], "\href{http://www.independent.co.uk/news/world/europe/french-students-call-on-education-minister-to-cancel-tricky-english-exam-question-10336986.html}{http://www.independent.co.uk/news/ world/europe/french-students-call-on-education-minister-to-cancel-tricky-english-exam-question-10336986.html}")
         self.assertEqual(ref.entries["year"], "June 22, 2015")
         self.assertEqual(ref.entries["note"], "[Online; Retrieved on July 4, 2015]")
+
+
+class TestBibTexFileClass(unittest.TestCase):
+
+    def test_empty_file(self):
+        filename = 'empty.bib'
+        bibtexfile = BibTexFile(filename)
+        self.assertEqual(bibtexfile.filename, 'empty.bib')
+        self.assertEqual(bibtexfile.references, [])
+
+    def test_one_file(self):
+        filename = 'one.bib'
+        bibtexfile = BibTexFile(filename)
+        self.assertEqual(bibtexfile.filename, 'one.bib')
+        self.assertEqual(len(bibtexfile.references), 1)
+        self.assertEqual(bibtexfile.references[0].type, 'book')
+        self.assertEqual(bibtexfile.references[0].id, 'feng2007bilingual')
+        self.assertEqual(bibtexfile.references[0].entries['title'], 'Bilingual education in {C}hina: practices, policies, and concepts')
+        self.assertEqual(bibtexfile.references[0].entries['author'], 'Feng, Anwei')
+        self.assertEqual(bibtexfile.references[0].entries['volume'], '64')
+        self.assertEqual(bibtexfile.references[0].entries['year'], '2007')
+        self.assertEqual(bibtexfile.references[0].entries['publisher'], 'Multilingual Matters')
 
 if __name__ == '__main__':
     unittest.main()

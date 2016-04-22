@@ -167,5 +167,12 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.references[1].entries['year'], '2011')
         self.assertEqual(bibtexfile.references[1].entries['publisher'], 'Multilingual Matters')
 
+    def test_lot_file(self):
+        filename = 'lot.bib'
+        bibtexfile = BibTexFile(filename)
+        self.assertEqual(bibtexfile.filename, 'lot.bib')
+        self.assertEqual(len(bibtexfile.references), 35)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -12,29 +12,32 @@ def getEntry(string):
         content = None
     else:
         first_dquote = string.find('"', equal)
+        first_curly = string.find('{', equal)
         name = string[0:equal].strip()
-        if first_dquote != -1:
+        print("getEntry: first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
+        if first_curly == -1 or (first_dquote != -1 and first_dquote < first_curly):
             # Found "", look for the next dquote
-            next_dquote = string.rfind('"')
-            content = string[first_dquote+1:next_dquote]
-        else:
+            last_dquote = string.rfind('"')
+            content = string[first_dquote+1:last_dquote]
+        elif first_dquote == -1 or (first_curly != -1 and first_curly < first_dquote):
             # Did not found "", the user may be using {}
-            entry_substring = ""
-            raise "Not implemented"
+            last_curly = string.rfind('}')
+            content = string[first_curly+1:last_curly]
     return name, content
 
 class Reference:
     def __init__(self, string):
         string = string.strip()
+        print(string + "\n\n")
         last_curly = string.rfind('}')
         cursor = 0
         if string[0] != "@":
-            logging.error("Did not found expected `@` at beginning of reference.")
+            logging.error("Did not found expected `@` at beginning of reference.\n" + string)
             self._error_handler()
         else:
             first_curly = string.find('{')
             if first_curly == -1:
-                logging.error("Did not found expected `{` after reference type.")
+                logging.error("Did not found expected `{` after reference type.\n" + string)
                 self._error_handler()
                 return
             self.type = string[1:first_curly].strip()
@@ -47,8 +50,14 @@ class Reference:
             has_entry = True
             while has_entry:
                 first_dquote = string.find('"', cursor)
-                if first_dquote != -1:
+                first_curly = string.find('{', cursor)
+                print("first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
+                if first_curly == -1 and first_dquote == -1:
+                    logging.error("No '\"' nor '{' were found.\n" + string)
+                    return
+                if first_curly == -1 or (first_dquote != -1 and first_dquote < first_curly):
                     # Found "", look for the next dquote
+                    print('Use ""')
                     next_dquote = string.find('"', first_dquote + 1)
                     next_comma = string.find(',', next_dquote + 1)
                     has_entry = next_comma != -1
@@ -57,15 +66,15 @@ class Reference:
                     else:
                         entry_substring = string[cursor:last_curly].strip()
                     cursor = next_comma + 1
-                else:
+                elif first_dquote == -1 or (first_curly != -1 and first_curly < first_dquote):
                     # Did not found "", the user may be using {}
+                    print("Use {}")
                     curly_counter = 0
-                    first_curly_index = -1
                     last_curly_index = -1
-                    while cursor < len(string) and (last_curly_index < 0 or first_curly_index < 0):
+                    start_type = cursor
+                    while cursor < len(string) and last_curly_index < 0:
                         if string[cursor] == "{":
                             curly_counter += 1
-                            first_curly_index = cursor
                         elif string[cursor] == "}":
                             curly_counter -= 1
                             if curly_counter == 0:
@@ -73,7 +82,7 @@ class Reference:
                         cursor += 1
                     next_comma = string.find(',', last_curly_index + 1)
                     has_entry = next_comma != -1
-                    entry_substring = string[first_curly_index:last_curly_index+1].strip()
+                    entry_substring = string[start_type:last_curly_index+1].strip()
                     cursor = next_comma + 1
                 # First entry may be empty if bibtex has an empty reference
                 if entry_substring == "":

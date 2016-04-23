@@ -44,9 +44,9 @@ if __name__ == "__main__":
         for ref_id, count in ref_id_count.items():
             ref_node_list.append(ref_id)
             if count in elists:
-                elists[count].append([latexfile, ref_id, count])
+                elists[count].append((latexfile, ref_id, count))
             else:
-                elists[count] = [[latexfile, ref_id, count]]
+                elists[count] = [(latexfile, ref_id, count)]
 
     G.add_nodes_from(latexfile_node_list)
     G.add_nodes_from(ref_node_list)
@@ -56,10 +56,13 @@ if __name__ == "__main__":
 
     nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
     nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')
+    edge_labels = {}
     for weight, elist in elists.items():
         nx.draw_networkx_edges(G, pos, edgelist=elist, width=weight)
+        for edge in elist:
+            edge_labels[(edge[0], edge[1])] = "%d" % weight
     nx.draw_networkx_labels(G, pos)
-    nx.draw_networkx_edge_labels(G, pos)
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
-    plt.axis('off')
+    plt.tick_params(which='both',bottom='off',top='off',labelbottom='off',left='off',right='off',labelleft='off')
     plt.show()

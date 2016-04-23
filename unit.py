@@ -131,15 +131,15 @@ class TestReferenceClass(unittest.TestCase):
 class TestBibTexFileClass(unittest.TestCase):
 
     def test_empty_file(self):
-        filename = 'empty.bib'
+        filename = 'unit/empty.bib'
         bibtexfile = BibTexFile(filename)
-        self.assertEqual(bibtexfile.filename, 'empty.bib')
+        self.assertEqual(bibtexfile.filename, 'unit/empty.bib')
         self.assertEqual(bibtexfile.references, [])
 
     def test_one_file(self):
-        filename = 'one.bib'
+        filename = 'unit/one.bib'
         bibtexfile = BibTexFile(filename)
-        self.assertEqual(bibtexfile.filename, 'one.bib')
+        self.assertEqual(bibtexfile.filename, 'unit/one.bib')
         self.assertEqual(len(bibtexfile.references), 1)
         self.assertEqual(bibtexfile.references[0].type, 'book')
         self.assertEqual(bibtexfile.references[0].id, 'feng2007bilingual')
@@ -150,9 +150,9 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.references[0].entries['publisher'], 'Multilingual Matters')
 
     def test_two_file(self):
-        filename = 'two.bib'
+        filename = 'unit/two.bib'
         bibtexfile = BibTexFile(filename)
-        self.assertEqual(bibtexfile.filename, 'two.bib')
+        self.assertEqual(bibtexfile.filename, 'unit/two.bib')
         self.assertEqual(len(bibtexfile.references), 2)
         self.assertEqual(bibtexfile.references[0].type, 'book')
         self.assertEqual(bibtexfile.references[0].id, 'feng2007bilingual')
@@ -170,15 +170,15 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.references[1].entries['publisher'], 'Multilingual Matters')
 
     def test_lot_file(self):
-        filename = 'lot.bib'
+        filename = 'unit/lot.bib'
         bibtexfile = BibTexFile(filename)
-        self.assertEqual(bibtexfile.filename, 'lot.bib')
+        self.assertEqual(bibtexfile.filename, 'unit/lot.bib')
         self.assertEqual(len(bibtexfile.references), 35)
 
 
 class TestLaTexFileClass(unittest.TestCase):
     def test_single_cite_file(self):
-        latex = LaTexFile('single_cite.tex')
+        latex = LaTexFile('unit/cite.tex')
         # check that the two lists have the same elements in the same number, regardless of their order
         self.assertCountEqual(latex.cites, ['laka2014mandela', 'baker2011foundations', 'independent2015bac', 'w3techs2014usage', 'feng2007bilingual', 'w3techs2014usage', 'feng2007bilingual', 'epi2014epi', 'toeic2015toeic'])
 

@@ -15,7 +15,7 @@ class LaTexFile:
             self.cites.extend(cite.split(','))
         for nocite in nocites:
             self.cites.extend(nocite.split(','))
-        title_index = content.find(r'\title{')
+        title_index = content.find(r'\title')
         if title_index == -1:
             self.title = "Unknown paper %d" % LaTexFile.unknown_count
             LaTexFile.unknown_count += 1

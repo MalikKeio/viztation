@@ -1,9 +1,9 @@
 import unittest
 from bibtexparser import Reference
 from bibtexparser import BibTexFile
+from latexparser import LaTexFile
 
 class TestReferenceClass(unittest.TestCase):
-
 
     def test_empty_input(self):
         string = ""
@@ -173,6 +173,11 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.filename, 'lot.bib')
         self.assertEqual(len(bibtexfile.references), 35)
 
+
+class TestLaTexFileClass(unittest.TestCase):
+    def test_single_cite_file(self):
+        latex = LaTexFile('single_cite.tex')
+        self.assertEqual(latex.cites, ['baker2011foundations', 'independent2015bac', 'w3techs2014usage'])
 
 if __name__ == '__main__':
     unittest.main()

@@ -25,7 +25,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 G = nx.Graph()
-elist = []
+elists = {}
 latexfile_node_list = []
 ref_node_list = []
 
@@ -40,16 +40,21 @@ for latexfile in latexfiles.files:
             ref_id_count[ref_id] += 1
     for ref_id, count in ref_id_count.items():
         ref_node_list.append(ref_id)
-        elist.append([latexfile, ref_id, count])
+        if count in elists:
+            elists[count].append([latexfile, ref_id, count])
+        else:
+            elists[count] = [[latexfile, ref_id, count]]
 
 G.add_nodes_from(latexfile_node_list)
 G.add_nodes_from(ref_node_list)
-G.add_weighted_edges_from(elist)
+for weight, elist in elists.items():
+    G.add_weighted_edges_from(elist)
 pos = nx.graphviz_layout(G, prog='twopi', args='')
 
 nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
 nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')
-nx.draw_networkx_edges(G, pos)
+for weight, elist in elists.items():
+    nx.draw_networkx_edges(G, pos, edgelist=elist, width=weight)
 nx.draw_networkx_labels(G, pos)
 nx.draw_networkx_edge_labels(G, pos)
 

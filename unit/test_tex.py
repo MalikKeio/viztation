@@ -3,6 +3,7 @@ from bibtexparser import Reference
 from bibtexparser import BibTexFile
 from bibtexparser import BibTexFiles
 from latexparser import LaTexFile
+import re
 
 class TestReferenceClass(unittest.TestCase):
 
@@ -210,3 +211,14 @@ class TestLaTexFileClass(unittest.TestCase):
         latex = LaTexFile('unit/cite.tex')
         # check that the two lists have the same elements in the same number, regardless of their order
         self.assertCountEqual(latex.cites, ['laka2014mandela', 'baker2011foundations', 'independent2015bac', 'w3techs2014usage', 'feng2007bilingual', 'w3techs2014usage', 'feng2007bilingual', 'epi2014epi', 'toeic2015toeic'])
+        self.assertEqual(latex.title, "Language Education in Japan: For{} Better or Worse")
+
+    def test_latex1_file(self):
+        latex = LaTexFile('unit/latex1.tex')
+        self.assertEqual(latex.title, "LMML")
+    def test_empty_file(self):
+        latex = LaTexFile('unit/empty.tex')
+        self.assertIsNotNone(re.match(r'Unknown paper \d', latex.title))
+    def test_syntax_error_file(self):
+        latex = LaTexFile('unit/syntax-error.tex')
+        self.assertIsNotNone(re.match(r'Unknown paper \d', latex.title))

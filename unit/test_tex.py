@@ -7,21 +7,21 @@ class TestReferenceClass(unittest.TestCase):
 
     def test_empty_input(self):
         string = ""
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, None)
         self.assertEqual(ref.id, None)
         self.assertEqual(ref.entries, {})
 
     def test_wrong_input_no_at(self):
         string = "jg"
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, None)
         self.assertEqual(ref.id, None)
         self.assertEqual(ref.entries, {})
 
     def test_wrong_input_no_first_curly(self):
         string = "@retrert grt r"
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, None)
         self.assertEqual(ref.id, None)
         self.assertEqual(ref.entries, {})
@@ -33,7 +33,7 @@ class TestReferenceClass(unittest.TestCase):
         }
 
         """
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, '')
         self.assertEqual(ref.id, '')
         self.assertEqual(ref.entries, {})
@@ -43,7 +43,7 @@ class TestReferenceClass(unittest.TestCase):
         @book {  newton1664gravity ,
         }
         """
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'book')
         self.assertEqual(ref.id, 'newton1664gravity')
         self.assertEqual(ref.entries, {})
@@ -55,14 +55,14 @@ class TestReferenceClass(unittest.TestCase):
             "Newton, Isaac"
         }
         """
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'book')
         self.assertEqual(ref.id, 'newton1664gravity')
         self.assertEqual(ref.entries, {"author": "Newton, Isaac"})
 
     def test_single_entry_no_white_spaces(self):
         string = '@book{newton1664gravity,author="Newton, Isaac"}'
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'book')
         self.assertEqual(ref.id, 'newton1664gravity')
         self.assertEqual(ref.entries, {"author": "Newton, Isaac"})
@@ -77,14 +77,14 @@ class TestReferenceClass(unittest.TestCase):
              year= "1664"
         }
         """
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'book')
         self.assertEqual(ref.id, 'newton1664gravity')
         self.assertEqual(ref.entries, {"author": "Newton, Isaac", "year": "1664"})
 
     def test_multi_entry_no_white_spaces(self):
         string = '@book{newton1664gravity,author="Newton, Isaac",year="1664"}'
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'book')
         self.assertEqual(ref.id, 'newton1664gravity')
         self.assertEqual(ref.entries, {"author": "Newton, Isaac", "year": "1664"})
@@ -98,7 +98,7 @@ class TestReferenceClass(unittest.TestCase):
   year="June 22, 2015",
   note="[Online; Retrieved on July 4, 2015]"
 }"""
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'misc')
         self.assertEqual(ref.id, 'independent2015bac')
         self.assertEqual(ref.entries["author"], "Sehmer, Alexander")
@@ -116,7 +116,7 @@ class TestReferenceClass(unittest.TestCase):
   year={June 22, 2015},
   note={[Online; Retrieved on July 4, 2015]}
 }"""
-        ref = Reference(string)
+        ref = Reference(string, "original_file")
         self.assertEqual(ref.type, 'misc')
         self.assertEqual(ref.id, 'independent2015bac')
         self.assertEqual(ref.entries["author"], "Sehmer, Alexander")
@@ -194,6 +194,7 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.references[0].entries['publisher'], 'ACM')
         self.assertEqual(bibtexfile.references[0].entries['address'], 'New York, NY, USA')
         self.assertEqual(bibtexfile.references[0].entries['keywords'], 'SPH, adsorption, bleeding, fluid simulation, guide')
+        print("Representation of BIB File: " + repr(bibtexfile))
 
 
 class TestLaTexFileClass(unittest.TestCase):

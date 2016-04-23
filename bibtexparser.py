@@ -26,7 +26,8 @@ def getEntry(string):
     return name, content
 
 class Reference:
-    def __init__(self, string):
+    def __init__(self, string, filename):
+        self.filename = filename
         string = string.strip()
         logging.debug(string + "\n\n")
         last_curly = string.rfind('}')
@@ -97,6 +98,14 @@ class Reference:
         self.id = None
         self.entries = {}
 
+    def __repr__(self):
+        s = "@%s{%s,\n" % (self.type, self.id)
+        for key, value in self.entries.items():
+            s += "%s={%s},\n" % (key, value)
+        # Remove trailing comma
+        s = s[:-1]
+        s += "\n}"
+        return s
 
 class BibTexFile:
     def __init__(self, filename):
@@ -121,11 +130,23 @@ class BibTexFile:
                 cursor += 1
             reference_string = content[cursor_start:cursor]
             if len(reference_string) > 0:
-                self.references.append(Reference(reference_string))
+                self.references.append(Reference(reference_string, filename))
             cursor += 1
             last_curly_index = -1
+
+    def __repr__(self):
+        s = ""
+        for reference in self.references:
+            s += "%s\n" % repr(reference)
+        return s
 
 class BibTexFiles:
     def __init__(self, filenames):
         self.files = [BibTexFile(filename) for filename in filenames]
+
+    def get_references(self):
         # Should remove double entries
+        references = []
+        for f in self.files:
+            references.extend(f.references)
+        return references

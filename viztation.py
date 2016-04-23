@@ -45,5 +45,7 @@ nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
 nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')
 nx.draw_networkx_edges(G, pos)
 nx.draw_networkx_labels(G, pos)
+nx.draw_networkx_edge_labels(G, pos)
 
+plt.axis('off')
 plt.show()

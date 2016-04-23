@@ -20,4 +20,17 @@ latexfiles = LaTexFiles(args.tex)
 bibtexfiles = BibTexFiles(args.bib)
 
 references = bibtexfiles.get_references()
-print(references)
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
+
+for latexfile in latexfiles.files:
+    G.add_node(latexfile)
+    for ref_id in latexfile.cites:
+        G.add_node(ref_id)
+        G.add_edge(latexfile, ref_id)
+
+nx.draw(G)
+plt.show()

@@ -53,7 +53,8 @@ class Reference:
                 first_curly = string.find('{', cursor)
                 logging.debug("first_dquote=%d, first curly=%d" % (first_dquote, first_curly))
                 if first_curly == -1 and first_dquote == -1:
-                    logging.error("No '\"' nor '{' were found.\n" + string)
+                    logging.warn("No '\"' nor '{' were found.\n" + string)
+                    logging.warn("Assume end of reference entry. Maybe I saw a useless trailing comma?")
                     return
                 if first_curly == -1 or (first_dquote != -1 and first_dquote < first_curly):
                     # Found "", look for the next dquote

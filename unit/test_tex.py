@@ -173,6 +173,28 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.filename, 'unit/lot.bib')
         self.assertEqual(len(bibtexfile.references), 35)
 
+    def test_ueda_bib_trailing_comma(self):
+        bibtexfile = BibTexFile('unit/ueda.bib')
+        self.assertEqual(bibtexfile.filename, 'unit/ueda.bib')
+        self.assertEqual(len(bibtexfile.references), 1)
+        self.assertEqual(bibtexfile.references[0].type, 'inproceedings')
+        self.assertEqual(bibtexfile.references[0].id, 'ueda2015adsorptive')
+        self.assertEqual(bibtexfile.references[0].entries['author'], 'Ueda, Kazuhide and Fujishiro, Issei')
+        self.assertEqual(bibtexfile.references[0].entries['title'], 'Adsorptive {SPH} for Directable Bleeding Simulation')
+        self.assertEqual(bibtexfile.references[0].entries['booktitle'], 'Proceedings of the 14th ACM SIGGRAPH International Conference on Virtual Reality Continuum and Its Applications in Industry')
+        self.assertEqual(bibtexfile.references[0].entries['series'], "VRCAI '15")
+        self.assertEqual(bibtexfile.references[0].entries['year'], '2015')
+        self.assertEqual(bibtexfile.references[0].entries['isbn'], '978-1-4503-3940-7')
+        self.assertEqual(bibtexfile.references[0].entries['location'], 'Kobe, Japan')
+        self.assertEqual(bibtexfile.references[0].entries['pages'], '9--16')
+        self.assertEqual(bibtexfile.references[0].entries['numpages'], '8')
+        self.assertEqual(bibtexfile.references[0].entries['url'], 'http://doi.acm.org/10.1145/2817675.2817684')
+        self.assertEqual(bibtexfile.references[0].entries['doi'], '10.1145/2817675.2817684')
+        self.assertEqual(bibtexfile.references[0].entries['acmid'], '2817684')
+        self.assertEqual(bibtexfile.references[0].entries['publisher'], 'ACM')
+        self.assertEqual(bibtexfile.references[0].entries['address'], 'New York, NY, USA')
+        self.assertEqual(bibtexfile.references[0].entries['keywords'], 'SPH, adsorption, bleeding, fluid simulation, guide')
+
 
 class TestLaTexFileClass(unittest.TestCase):
     def test_single_cite_file(self):

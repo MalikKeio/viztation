@@ -5,4 +5,10 @@ class LaTexFile:
         f = open(filename, 'r')
         content = f.read()
         f.close()
-        self.cites = re.findall(r'\\cite{(\w+)}', content)
+        cites = re.findall(r'\\cite{([\w,]+)}', content)
+        nocites = re.findall(r'\\nocite{([\w,]+)}', content)
+        self.cites = []
+        for cite in cites:
+            self.cites.extend(cite.split(','))
+        for nocite in nocites:
+            self.cites.extend(nocite.split(','))

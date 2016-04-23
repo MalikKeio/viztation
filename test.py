@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import unittest
 from bibtexparser import Reference
 from bibtexparser import BibTexFile
@@ -177,7 +179,8 @@ class TestBibTexFileClass(unittest.TestCase):
 class TestLaTexFileClass(unittest.TestCase):
     def test_single_cite_file(self):
         latex = LaTexFile('single_cite.tex')
-        self.assertEqual(latex.cites, ['baker2011foundations', 'independent2015bac', 'w3techs2014usage'])
+        # check that the two lists have the same elements in the same number, regardless of their order
+        self.assertCountEqual(latex.cites, ['laka2014mandela', 'baker2011foundations', 'independent2015bac', 'w3techs2014usage', 'feng2007bilingual', 'w3techs2014usage', 'feng2007bilingual', 'epi2014epi', 'toeic2015toeic'])
 
 if __name__ == '__main__':
     unittest.main()

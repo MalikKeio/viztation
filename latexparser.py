@@ -12,3 +12,7 @@ class LaTexFile:
             self.cites.extend(cite.split(','))
         for nocite in nocites:
             self.cites.extend(nocite.split(','))
+
+class LaTexFiles:
+    def __init__(self, filenames):
+        self.files = [LaTexFile(filename) for filename in filenames]

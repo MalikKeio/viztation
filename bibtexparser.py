@@ -5,7 +5,7 @@ def getEntry(string):
     Get a stripped reference entry as argument
     Like 'author="Newton, Isaac"' for example.
     """
-    logging.debug("Entry:", string, "EOS")
+    logging.debug("Entry: %s EOS" % string)
     equal = string.find("=")
     if equal == -1:
         name = None
@@ -123,3 +123,8 @@ class BibTexFile:
                 self.references.append(Reference(reference_string))
             cursor += 1
             last_curly_index = -1
+
+class BibTexFiles:
+    def __init__(self, filenames):
+        self.files = [BibTexFile(filename) for filename in filenames]
+        # Should remove double entries

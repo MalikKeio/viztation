@@ -25,12 +25,25 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 G = nx.Graph()
+elist = []
+latexfile_node_list = []
+ref_node_list = []
 
 for latexfile in latexfiles.files:
-    G.add_node(latexfile)
+    latexfile_node_list.append(latexfile)
     for ref_id in latexfile.cites:
-        G.add_node(ref_id)
-        G.add_edge(latexfile, ref_id)
+        ref_node_list.append(ref_id)
+        # Should set and show weight
+        elist.append((latexfile, ref_id, 1))
 
-nx.draw(G)
+G.add_nodes_from(latexfile_node_list)
+G.add_nodes_from(ref_node_list)
+G.add_weighted_edges_from(elist)
+pos = nx.graphviz_layout(G, prog='twopi', args='')
+
+nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
+nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')
+nx.draw_networkx_edges(G, pos)
+nx.draw_networkx_labels(G, pos)
+
 plt.show()

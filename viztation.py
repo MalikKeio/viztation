@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 print(args.tex, args.bib, args.verbose)
 if(args.verbose):
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(filename="out.log", level=logging.DEBUG)
 
 from latexparser import LaTexFiles
 from bibtexparser import BibTexFiles

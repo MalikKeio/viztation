@@ -149,4 +149,14 @@ class BibTexFiles:
         references = []
         for f in self.files:
             references.extend(f.references)
+        # Look for duplicates
+        to_remove_index = []
+        for i in range(len(references)):
+            for j in range(i+1, len(references)):
+                if references[i].id == references[j].id:
+                    logging.warn("Duplication for reference %s" % references[i].id)
+                    logging.warn("Only taking the first one into account... Deleting index %s" % j)
+                    to_remove_index.append(j)
+        references = [references[i] for i in range(len(references)) if i not in to_remove_index]
+        references.sort(key=lambda r: r.id.lower())
         return references

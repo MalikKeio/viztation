@@ -1,6 +1,7 @@
 import unittest
 from bibtexparser import Reference
 from bibtexparser import BibTexFile
+from bibtexparser import BibTexFiles
 from latexparser import LaTexFile
 
 class TestReferenceClass(unittest.TestCase):
@@ -195,6 +196,13 @@ class TestBibTexFileClass(unittest.TestCase):
         self.assertEqual(bibtexfile.references[0].entries['address'], 'New York, NY, USA')
         self.assertEqual(bibtexfile.references[0].entries['keywords'], 'SPH, adsorption, bleeding, fluid simulation, guide')
         print("Representation of BIB File: " + repr(bibtexfile))
+
+    def test_bibtex_sort_references_no_duplicate(self):
+        bibfiles = BibTexFiles(['unit/cf.bib', 'unit/lot.bib', 'unit/two.bib'])
+        references = bibfiles.get_references()
+        ids = [r.id for r in references]
+        no_duplicate_sorted_ids = sorted(list(set(ids)), key=lambda id: id.lower())
+        self.assertEqual(ids, no_duplicate_sorted_ids)
 
 
 class TestLaTexFileClass(unittest.TestCase):

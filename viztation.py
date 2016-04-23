@@ -31,10 +31,16 @@ ref_node_list = []
 
 for latexfile in latexfiles.files:
     latexfile_node_list.append(latexfile)
+    ref_id_count = {}
     for ref_id in latexfile.cites:
-        ref_node_list.append(ref_id)
         # Should set and show weight
-        elist.append((latexfile, ref_id, 1))
+        if ref_id not in ref_id_count:
+            ref_id_count[ref_id] = 1
+        else:
+            ref_id_count[ref_id] += 1
+    for ref_id, count in ref_id_count.items():
+        ref_node_list.append(ref_id)
+        elist.append([latexfile, ref_id, count])
 
 G.add_nodes_from(latexfile_node_list)
 G.add_nodes_from(ref_node_list)

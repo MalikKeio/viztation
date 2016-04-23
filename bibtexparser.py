@@ -107,6 +107,9 @@ class Reference:
         s += "\n}"
         return s
 
+    def is_id(self, compared_id):
+        return self.id == compared_id;
+
 class BibTexFile:
     def __init__(self, filename):
         self.filename = filename
@@ -153,7 +156,7 @@ class BibTexFiles:
         to_remove_index = []
         for i in range(len(references)):
             for j in range(i+1, len(references)):
-                if references[i].id == references[j].id:
+                if references[i].is_id(references[j].id):
                     logging.warn("Duplication for reference %s" % references[i].id)
                     logging.warn("Only taking the first one into account... Deleting index %s" % j)
                     to_remove_index.append(j)

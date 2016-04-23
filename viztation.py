@@ -10,12 +10,14 @@ parser.add_argument('-v', '--verbose', action="store_true", help="Set output to 
 
 args = parser.parse_args()
 
-print(args.tex, args.bib, args.verbose)
 if(args.verbose):
     logging.basicConfig(filename="out.log", level=logging.DEBUG)
 
 from latexparser import LaTexFiles
 from bibtexparser import BibTexFiles
 
-bibtexfiles = LaTexFiles(args.tex)
+latexfiles = LaTexFiles(args.tex)
 bibtexfiles = BibTexFiles(args.bib)
+
+references = bibtexfiles.get_references()
+print(references)

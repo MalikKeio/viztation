@@ -52,7 +52,7 @@ if __name__ == "__main__":
     G.add_nodes_from(ref_node_list)
     for weight, elist in elists.items():
         G.add_weighted_edges_from(elist)
-    pos = nx.graphviz_layout(G, prog='twopi', args='')
+    pos = nx.nx_agraph.graphviz_layout(G, prog='twopi', args='')
 
     nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
     nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')

@@ -21,7 +21,7 @@ if __name__ == "__main__":
     latexfiles = LaTexFiles(args.tex)
     bibtexfiles = BibTexFiles(args.bib)
 
-    references = bibtexfiles.get_references()
+    references = bibtexfiles.get_references(dictionary=True)
 
 
     import networkx as nx
@@ -55,6 +55,7 @@ if __name__ == "__main__":
         G.add_weighted_edges_from(elist)
     pos = nx.nx_agraph.graphviz_layout(G, prog='twopi', args='')
     interaction.InteractiveNodes(pos)
+    interaction.InteractiveNode.set_reference_dict(references)
 
     nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
     nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')

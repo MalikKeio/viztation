@@ -26,6 +26,7 @@ if __name__ == "__main__":
 
     import networkx as nx
     import matplotlib.pyplot as plt
+    import interaction
 
     G = nx.Graph()
     elists = {}
@@ -53,6 +54,7 @@ if __name__ == "__main__":
     for weight, elist in elists.items():
         G.add_weighted_edges_from(elist)
     pos = nx.nx_agraph.graphviz_layout(G, prog='twopi', args='')
+    interaction.InteractiveNodes(pos)
 
     nx.draw_networkx_nodes(G, pos, nodelist=latexfile_node_list, node_color='r')
     nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')

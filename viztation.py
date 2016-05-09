@@ -7,11 +7,21 @@ parser = argparse.ArgumentParser(description="Put your TeX and Bib files here to
 parser.add_argument('-t', '--tex', nargs='*', default=[], type=str, help="TeX files to load and link")
 parser.add_argument('-b', '--bib', nargs='*', default=[], type=str, help="BiB files to load and link")
 parser.add_argument('-v', '--verbose', action="store_true", help="Set output to verbose (debug)")
+parser.add_argument('-s', '--scan', nargs='*', default=[], type=str, help="Scan a folder or more for TeX and BiB files (found files are added to possible --tex and --bib arguments)")
 
 args = parser.parse_args()
 
-if(args.verbose):
+if args.verbose:
     logging.basicConfig(filename="out.log", level=logging.DEBUG)
+
+for directory in args.scan:
+    import os
+    for root, dirs, files in os.walk(directory):
+        for f in files:
+            if f.endswith(".tex"):
+                args.tex.append(os.path.join(root, f));
+            if f.endswith(".bib"):
+                args.bib.append(os.path.join(root, f));
 
 if __name__ == "__main__":
 

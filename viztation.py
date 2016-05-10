@@ -71,7 +71,7 @@ if __name__ == "__main__":
     nx.draw_networkx_nodes(G, pos, nodelist=ref_node_list, node_color='b')
     edge_labels = {}
     for weight, elist in elists.items():
-        nx.draw_networkx_edges(G, pos, edgelist=elist, width=weight)
+        nx.draw_networkx_edges(G, pos, edgelist=elist, width=weight, edge_color='grey')
         for edge in elist:
             edge_labels[(edge[0], edge[1])] = "%d" % weight
     nx.draw_networkx_labels(G, pos)
